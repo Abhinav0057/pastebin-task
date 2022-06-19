@@ -43,14 +43,14 @@ while True:
     if len(items)==30:
         filename = "news.csv"
         f = open(filename, "w",encoding="utf-8")
-
+        driver.close()
         header = "Contains 30 list of news from annapurnam.com\n"
         f.write(header)
         for item in items:
             f.write(str(item) )
             f.write('\n')
             
-            driver.close()
+            
             break
     
     else:
