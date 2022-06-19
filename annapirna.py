@@ -2,6 +2,8 @@ from os import spawnl
 from bs4 import BeautifulSoup as soup
 import requests
 from selenium import webdriver
+import json
+  
 
 # import time
 
@@ -15,16 +17,9 @@ from selenium import webdriver
 # print(searchquery)
 ## Using nepal for now as default 
 
-searchquery="नेपाल"
-searchUrl="https://annapurnapost.com/search/news?query="+searchquery
-print(searchUrl)
 
 
-
-
-driver = webdriver.Chrome("C:\chromedriver.exe")
-
-def callFuncUntillThirty():
+def callFuncUntillThirty(seatchUrl):
     
     driver = webdriver.Chrome("C:\chromedriver.exe")
     driver.get(searchUrl)
@@ -33,46 +28,62 @@ def callFuncUntillThirty():
     soupPage=soup(driver.page_source, 'html.parser')
     items=[]
     items=soupPage.find_all('div',attrs={'class':'wide-media'})[:30]
+
    
     return items
 
+def myDataCollection(url):
+    while True:
+        items=callFuncUntillThirty(url)
 
-while True:
-    items=callFuncUntillThirty()
+        if len(items)==30:
+            # filename = "news.csv"
+            # f = open(filename, "w",encoding="utf-8")
+            f = open('out.json','w',encoding="utf-8")
 
-    if len(items)==30:
-        filename = "news.csv"
-        f = open(filename, "w",encoding="utf-8")
-        driver.close()
-        header = "Contains 30 list of news from annapurnam.com\n"
-        f.write(header)
-        for item in items:
-            f.write(str(item) )
-            f.write('\n')
-            
-            
+            # header = "Contains 30 list of news from annapurnam.com\n"
+            # f.write(header)
+            i=1
+            for item in items:
+                data={i:(str(item)+'\n')}
+                json.dump(data,f )
+                i=i+1              
+                           
             break
     
-    else:
-        print(len(items))
-        print("Its not 30 data so rereading datas ")
-        driver.close()
+        else:
+            print(len(items))
+            print("Its not 30 data so rereading datas ")
+            driver.quit()
 
-f.close()
-
-
+    f.close()
 
 
 
-# print(htmlPage.content)
-# soupPage = soup(htmlPage, 'html5lib')
-
-# print(items)
 
 
+if __name__ == "__main__":
+    f = open('out.json','w',encoding="utf-8")
+  
+    searchquery="नेपाल"
+    searchUrl="https://annapurnapost.com/search/news?query="+searchquery
+    print(searchUrl)
+    driver = webdriver.Chrome("C:\chromedriver.exe")
+    myDataCollection(searchUrl)
 
-# for item in items:
-#      print(1)
+
+
+
+
+
+
+
+
+
+ 
+
+
+
 
  
 
