@@ -3,16 +3,21 @@ import string
 
 
 myDict={
-    'name':"Abhinav",
+    'name':123,
     'number':100,
     'isMale':False,
-    'arr':[100,200,300,400,5]
+    # 'arr':[100,200,300,400,5]
    
 }
 #[min,max]
 mystring=[5,100]
 myNumber=[2,10]
-validationRules=[mystring,myNumber]
+datatypein={
+    'name':str,
+    'number':int,
+    'isMale':bool,
+}
+validationRules=[mystring,myNumber,datatypein]
 
 
 def eachValueValidiar(x,validationRules):
@@ -45,26 +50,32 @@ def eachValueValidiar(x,validationRules):
 
 def myValidatinfunc(myDict,validationRules):
     for x in myDict:
-        x=(myDict[x])
-        # print(type(x))
-        if(isinstance(x,bool) or isinstance(x,str) or isinstance(x,int)):
-            isDict=eachValueValidiar(x,validationRules)
-            if (isDict==False):
-                return False
-                break
-        elif(isinstance(x,list)):
-            for data in x:
-                isDict=eachValueValidiar(data,validationRules)
+        # print(x)
+        y=(validationRules[2].get(x))
+        if(isinstance(myDict[x],str)):
+       
+            x=(myDict[x])
+            # print(type(x))
+            if(isinstance(x,bool) or isinstance(x,str) or isinstance(x,int)):
+                isDict=eachValueValidiar(x,validationRules)
                 if (isDict==False):
                     return False
                     break
+            elif(isinstance(x,list)):
+                for data in x:
+                    isDict=eachValueValidiar(data,validationRules)
+                    if (isDict==False):
+                        return False
+                        break
+            return True
         
         else:
+            return False
             print("Other Data types not supported now")
 
            
     
-    return isDict
+    return True
                 
             
    
